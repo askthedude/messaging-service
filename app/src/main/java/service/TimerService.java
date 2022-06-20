@@ -14,14 +14,17 @@ public class TimerService {
     public long changeTimerValueForId(String id, long delta){
         timers.computeIfPresent(id, (key, oldVal) -> new TimerEntry(oldVal.value + delta, oldVal.timerId));
         var timerEntry = timers.get(id);
-        if( timerEntry.value <= 0 ) {
+        if(timerEntry != null && timerEntry.value <= 0 ) {
             return timerEntry.timerId;
         }
         return CONTINUE_FLAG;
     }
 
     public void removeTimerWithId(String id){
-        timers.remove(id);
+        TimerEntry remove = timers.remove(id);
+        if(remove != null){
+            timerIdToUniqueId.remove(remove.timerId);
+        }
     }
 
     public void updateTimerIdForUniqueId(String uniqueId, long timerId){

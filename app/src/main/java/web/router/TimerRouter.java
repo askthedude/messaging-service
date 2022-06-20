@@ -87,8 +87,8 @@ public class TimerRouter {
     }
 
     private void handleTimerDelete(RoutingContext routingContext) {
-        var timerId = Long.parseLong(routingContext.pathParam("timerId"));
-        timerController.removeTimerWithId(timerId);
+        var timerId = routingContext.pathParam("timerId");
+        timerController.removeTimerUniqueId(timerId);
         routingContext.response()
                 .setStatusCode(200)
                 .end();

@@ -56,9 +56,10 @@ public class WebServerVerticle extends AbstractVerticle {
      */
     private void handleFailure(RoutingContext e) {
         if (e.failed()) {
+            LOGGER.warn(e.failure());
             e.response()
                     .setStatusCode(HttpResponseStatus.INTERNAL_SERVER_ERROR.code())
-                    .end(new JsonObject().put("message", "Some problem on server occured").toBuffer());
+                    .end(new JsonObject().put("message", "Server side error occured.").toBuffer());
         }
     }
 

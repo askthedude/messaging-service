@@ -24,6 +24,11 @@ public class TimerController {
         service.removeTimerWithTimerId(id);
     }
 
+    public void removeTimerUniqueId(String uniqueId){
+        service.removeTimerWithId(uniqueId);
+    }
+
+
     public void updateTimerIdForUniqueId(String uniqueId, long timerId){
         service.updateTimerIdForUniqueId(uniqueId, timerId);
     }
