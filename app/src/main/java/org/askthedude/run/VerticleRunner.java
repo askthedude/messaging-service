@@ -15,6 +15,8 @@ import web.controller.TimerController;
 import web.router.HealthcheckRouter;
 import web.router.TimerRouter;
 
+import static utils.Constants.DEFAULT_PORT;
+
 public class VerticleRunner extends AbstractVerticle {
     private static final Logger LOGGER = LogManager.getLogger(Main.class);
 
@@ -60,6 +62,9 @@ public class VerticleRunner extends AbstractVerticle {
 
     private void startUpVerticles(JsonObject configuration) {
         Integer port = configuration.getInteger("port");
+        if(port == null){
+            port = DEFAULT_PORT;
+        }
         startupWebVerticle(port);
     }
 

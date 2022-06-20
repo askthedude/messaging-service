@@ -37,11 +37,6 @@ public class TimerRouter {
         return router;
     }
 
-    private void handleTimerDelete(RoutingContext routingContext) {
-        var timerId = Long.parseLong(routingContext.pathParam("timerId"));
-        timerController.removeTimerWithId(timerId);
-    }
-
     private void handleTimerPost(RoutingContext routingContext) {
         var body = routingContext.body().asJsonObject();
         var delay = body.getLong("delay");
@@ -88,5 +83,10 @@ public class TimerRouter {
                     .end(new JsonObject()
                             .put("value", value).toBuffer());
         }
+    }
+    
+    private void handleTimerDelete(RoutingContext routingContext) {
+        var timerId = Long.parseLong(routingContext.pathParam("timerId"));
+        timerController.removeTimerWithId(timerId);
     }
 }

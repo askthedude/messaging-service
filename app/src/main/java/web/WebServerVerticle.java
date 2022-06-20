@@ -6,6 +6,7 @@ import io.vertx.core.Promise;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
+import io.vertx.ext.web.handler.BodyHandler;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import web.router.HealthcheckRouter;
@@ -36,6 +37,8 @@ public class WebServerVerticle extends AbstractVerticle {
 
     private Router setUpRoutersHierarchy(){
         var baseRouter = Router.router(vertx);
+        baseRouter.route("/*")
+                        .handler(BodyHandler.create());
         baseRouter.route("/*")
                         .handler(this::handleLogging);
         baseRouter.route("/*")
