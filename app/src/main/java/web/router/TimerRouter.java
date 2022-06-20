@@ -56,6 +56,7 @@ public class TimerRouter {
             var timerId = timerController.changeTimerValueForId(uniqueId, -1 * delta);
             if ( timerId != CONTINUE_FLAG ){
                 boolean removedTimer = vertx.cancelTimer(timerId);
+                timerController.removeTimerWithId(timerId);
                 if(removedTimer){
                     LOGGER.info("Removed timer with id: {}", timerId);
                 }
@@ -84,9 +85,12 @@ public class TimerRouter {
                             .put("value", value).toBuffer());
         }
     }
-    
+
     private void handleTimerDelete(RoutingContext routingContext) {
         var timerId = Long.parseLong(routingContext.pathParam("timerId"));
         timerController.removeTimerWithId(timerId);
+        routingContext.response()
+                .setStatusCode(200)
+                .end();
     }
 }

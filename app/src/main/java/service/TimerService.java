@@ -32,6 +32,14 @@ public class TimerService {
         return timerIdToUniqueId.get(timerId);
     }
 
+    public void removeTimerWithTimerId(long timerId){
+        var uniqueId = timerIdToUniqueId.get(timerId);
+        if(uniqueId != null){
+            timerIdToUniqueId.remove(timerId);
+            timers.remove(uniqueId);
+        }
+    }
+
     public TimerEntry getTimerEntryForUniqueId(String uniqueId){
         return timers.get(uniqueId);
     }

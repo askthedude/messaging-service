@@ -21,10 +21,7 @@ public class TimerController {
     }
 
     public void removeTimerWithId(long id){
-        var uniqueId = service.getUniqueIdForTimerId(id);
-        if(uniqueId != null){
-            service.removeTimerWithId(uniqueId);
-        }
+        service.removeTimerWithTimerId(id);
     }
 
     public void updateTimerIdForUniqueId(String uniqueId, long timerId){
