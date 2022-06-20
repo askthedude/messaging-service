@@ -1,6 +1,7 @@
 package web.router;
 
 import io.vertx.core.Vertx;
+import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
 import web.controller.TimerController;
@@ -38,7 +39,11 @@ public class TimerRouter {
         var body = routingContext.body().asJsonObject();
         var delay = body.getLong("delay");
         var delta = body.getLong("delta");
-        var initValue = body.getInteger("init");
+        var initValue = body.getInteger("initValue");
+        if( delay == null || delta == null || initValue == null ){
+            routingContext.response().setStatusCode(400).end(new JsonObject().put("message", "invalid input, please specify: delay, initValue and delta").toBuffer());
+            return;
+        }
         String uniqueId = UUID.randomUUID().toString();
         timerController.addNewInitializedTimer(uniqueId, initValue);
         long id = vertx.setPeriodic(delay, e -> {
