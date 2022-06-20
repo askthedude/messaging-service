@@ -3,8 +3,6 @@ package web.router;
 import io.vertx.core.Vertx;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import web.controller.TimerController;
 
 import java.util.UUID;
