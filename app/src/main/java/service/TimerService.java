@@ -11,8 +11,13 @@ public class TimerService {
         timers.put(id, new TimerEntry(currentValue, NOT_ASSIGNED_YET));
     }
 
-    public void changeTimerValueForId(String id, long delta){
+    public long changeTimerValueForId(String id, long delta){
         timers.computeIfPresent(id, (key, oldVal) -> new TimerEntry(oldVal.value + delta, oldVal.timerId));
+        var timerEntry = timers.get(id);
+        if( timerEntry.value <= 0 ) {
+            return timerEntry.timerId;
+        }
+        return CONTINUE_FLAG;
     }
 
     public void removeTimerWithId(String id){
@@ -27,7 +32,12 @@ public class TimerService {
         return timerIdToUniqueId.get(timerId);
     }
 
+    public TimerEntry getTimerEntryForUniqueId(String uniqueId){
+        return timers.get(uniqueId);
+    }
+
     public static final long NOT_ASSIGNED_YET = -1;
+    public static final long CONTINUE_FLAG = -1;
 
     public static class TimerEntry{
         public long value;

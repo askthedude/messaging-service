@@ -2,7 +2,10 @@ package web.controller;
 
 import service.TimerService;
 
+import static utils.Constants.NO_TIMER_RESULT;
+
 public class TimerController {
+
     private final TimerService service;
 
     public TimerController(TimerService service) {
@@ -13,8 +16,8 @@ public class TimerController {
         service.addNewInitializedTimer(uniqueid, initValue);
     }
 
-    public void changeTimerValueForId(String id, long value){
-        service.changeTimerValueForId(id, value);
+    public long changeTimerValueForId(String id, long value){
+        return service.changeTimerValueForId(id, value);
     }
 
     public void removeTimerWithId(long id){
@@ -28,4 +31,11 @@ public class TimerController {
         service.updateTimerIdForUniqueId(uniqueId, timerId);
     }
 
+    public long getResultForTimerId(String uniqueId){
+        var result = service.getTimerEntryForUniqueId(uniqueId);
+        if(result == null){
+            return NO_TIMER_RESULT;
+        }
+        return result.value;
+    }
 }
