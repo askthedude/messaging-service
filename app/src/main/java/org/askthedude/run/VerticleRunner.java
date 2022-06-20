@@ -8,8 +8,12 @@ import io.vertx.core.Promise;
 import io.vertx.core.json.JsonObject;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import service.TimerService;
 import web.WebServerVerticle;
+import web.controller.HealthCheckController;
+import web.controller.TimerController;
 import web.router.HealthcheckRouter;
+import web.router.TimerRouter;
 
 public class VerticleRunner extends AbstractVerticle {
     private static final Logger LOGGER = LogManager.getLogger(Main.class);
@@ -60,7 +64,11 @@ public class VerticleRunner extends AbstractVerticle {
     }
 
     private void startupWebVerticle(int port) {
-        var webServerFuture = vertx.deployVerticle(new WebServerVerticle(port, new HealthcheckRouter()));
+        var healthCheckRouter = new HealthcheckRouter(new HealthCheckController());
+        var service = new TimerService();
+        var timerController = new TimerController(service);
+        var timerRouter = new TimerRouter(timerController);
+        var webServerFuture = vertx.deployVerticle(new WebServerVerticle(port, healthCheckRouter, timerRouter));
         webServerFuture.onComplete(result -> {
             if (result.succeeded()) {
                 webServerVerticleId = result.result();

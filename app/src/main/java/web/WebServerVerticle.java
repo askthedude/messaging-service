@@ -9,6 +9,7 @@ import io.vertx.ext.web.RoutingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import web.router.HealthcheckRouter;
+import web.router.TimerRouter;
 
 public class WebServerVerticle extends AbstractVerticle {
     private static final Logger LOGGER = LogManager.getLogger(WebServerVerticle.class);
@@ -16,11 +17,13 @@ public class WebServerVerticle extends AbstractVerticle {
 
     private final int port;
     private final HealthcheckRouter healthCheckRouter;
+    private final TimerRouter timerRouter;
 
 
-    public WebServerVerticle(int port, HealthcheckRouter healthCheckRouter) {
+    public WebServerVerticle(int port, HealthcheckRouter healthCheckRouter, TimerRouter timerRouter) {
         this.port = port;
         this.healthCheckRouter = healthCheckRouter;
+        this.timerRouter = timerRouter;
     }
 
     @Override
@@ -39,6 +42,8 @@ public class WebServerVerticle extends AbstractVerticle {
                         .failureHandler(this::handleFailure);
         baseRouter.route("/api/*")
                         .subRouter(healthCheckRouter.router(vertx));
+        baseRouter.route("/api/*")
+                .subRouter(timerRouter.router(vertx));
 
         return baseRouter;
     }

@@ -10,7 +10,11 @@ import web.controller.HealthCheckController;
 
 public class HealthcheckRouter {
     private static final Logger LOGGER = LogManager.getLogger(HealthcheckRouter.class);
-    private final HealthCheckController controller = new HealthCheckController();
+    private final HealthCheckController controller;
+
+    public HealthcheckRouter(HealthCheckController controller) {
+        this.controller = controller;
+    }
 
     public Router router(Vertx vertx){
         var router = Router.router(vertx);
