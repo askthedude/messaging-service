@@ -12,30 +12,30 @@ public class TimerController {
         this.service = service;
     }
 
-    public void addNewInitializedTimer(String uniqueid, long initValue){
+    public void addNewInitializedTimer(String uniqueid, long initValue) {
         service.addNewInitializedTimer(uniqueid, initValue);
     }
 
-    public long changeTimerValueForId(String id, long value){
+    public long changeTimerValueForId(String id, long value) {
         return service.changeTimerValueForId(id, value);
     }
 
-    public void removeTimerWithId(long id){
+    public void removeTimerWithId(long id) {
         service.removeTimerWithTimerId(id);
     }
 
-    public void removeTimerUniqueId(String uniqueId){
+    public void removeTimerUniqueId(String uniqueId) {
         service.removeTimerWithId(uniqueId);
     }
 
 
-    public void updateTimerIdForUniqueId(String uniqueId, long timerId){
+    public void updateTimerIdForUniqueId(String uniqueId, long timerId) {
         service.updateTimerIdForUniqueId(uniqueId, timerId);
     }
 
-    public long getResultForTimerId(String uniqueId){
+    public long getResultForTimerId(String uniqueId) {
         var result = service.getTimerEntryForUniqueId(uniqueId);
-        if(result == null){
+        if (result == null) {
             return NO_TIMER_RESULT;
         }
         return result.value;

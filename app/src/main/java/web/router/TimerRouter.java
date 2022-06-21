@@ -23,7 +23,7 @@ public class TimerRouter {
         this.timerController = timerController;
     }
 
-    public Router router(Vertx vertx){
+    public Router router(Vertx vertx) {
         this.vertx = vertx;
         var router = Router.router(vertx);
         router.post("/timer")
@@ -42,7 +42,7 @@ public class TimerRouter {
         var delay = body.getLong("delay");
         var delta = body.getLong("delta");
         var initValue = body.getInteger("initValue");
-        if( delay == null || delta == null || initValue == null ){
+        if (delay == null || delta == null || initValue == null) {
             routingContext.response()
                     .setStatusCode(400)
                     .end(new JsonObject()
@@ -53,16 +53,17 @@ public class TimerRouter {
         String uniqueId = UUID.randomUUID().toString();
         timerController.addNewInitializedTimer(uniqueId, initValue);
         long id = vertx.setPeriodic(delay, e -> {
+            System.out.println(Thread.currentThread().getName());
             var timerId = timerController.changeTimerValueForId(uniqueId, -1 * delta);
-            if ( timerId != CONTINUE_FLAG ){
+            if (timerId != CONTINUE_FLAG) {
                 boolean removedTimer = vertx.cancelTimer(timerId);
                 timerController.removeTimerWithId(timerId);
-                if(removedTimer){
+                if (removedTimer) {
                     LOGGER.info("Removed timer with id: {}", timerId);
                 }
             }
         });
-
+        System.out.println(Thread.currentThread().getName());
         timerController.updateTimerIdForUniqueId(uniqueId, id);
         routingContext.response()
                 .setStatusCode(200)
@@ -74,11 +75,11 @@ public class TimerRouter {
     private void handleTimerGet(RoutingContext routingContext) {
         var uniqueId = routingContext.pathParam("timerId");
         var value = timerController.getResultForTimerId(uniqueId);
-        if(value == NO_TIMER_RESULT){
+        if (value == NO_TIMER_RESULT) {
             routingContext.response()
                     .setStatusCode(404)
                     .end();
-        }else{
+        } else {
             routingContext.response()
                     .setStatusCode(200)
                     .end(new JsonObject()

@@ -15,11 +15,9 @@ import web.router.TimerRouter;
 public class WebServerVerticle extends AbstractVerticle {
     private static final Logger LOGGER = LogManager.getLogger(WebServerVerticle.class);
 
-
     private final int port;
     private final HealthcheckRouter healthCheckRouter;
     private final TimerRouter timerRouter;
-
 
     public WebServerVerticle(int port, HealthcheckRouter healthCheckRouter, TimerRouter timerRouter) {
         this.port = port;
@@ -35,16 +33,16 @@ public class WebServerVerticle extends AbstractVerticle {
         startPromise.complete();
     }
 
-    private Router setUpRoutersHierarchy(){
+    private Router setUpRoutersHierarchy() {
         var baseRouter = Router.router(vertx);
         baseRouter.route("/*")
-                        .handler(BodyHandler.create());
+                .handler(BodyHandler.create());
         baseRouter.route("/*")
-                        .handler(this::handleLogging);
+                .handler(this::handleLogging);
         baseRouter.route("/*")
-                        .failureHandler(this::handleFailure);
+                .failureHandler(this::handleFailure);
         baseRouter.route("/api/*")
-                        .subRouter(healthCheckRouter.router(vertx));
+                .subRouter(healthCheckRouter.router(vertx));
         baseRouter.route("/api/*")
                 .subRouter(timerRouter.router(vertx));
 
@@ -63,7 +61,7 @@ public class WebServerVerticle extends AbstractVerticle {
         }
     }
 
-    private void handleLogging(RoutingContext ctx){
+    private void handleLogging(RoutingContext ctx) {
         var request = ctx.request();
         var URI = request.uri();
         var method = request.method().toString();

@@ -62,7 +62,7 @@ public class VerticleRunner extends AbstractVerticle {
 
     private void startUpVerticles(JsonObject configuration) {
         Integer port = configuration.getInteger("port");
-        if(port == null){
+        if (port == null) {
             port = DEFAULT_PORT;
         }
         startupWebVerticle(port);

@@ -16,7 +16,7 @@ public class HealthcheckRouter {
         this.controller = controller;
     }
 
-    public Router router(Vertx vertx){
+    public Router router(Vertx vertx) {
         var router = Router.router(vertx);
         router.get("/healthcheck")
                 .handler(this::handleHealthCheck);
@@ -24,10 +24,10 @@ public class HealthcheckRouter {
     }
 
     private void handleHealthCheck(RoutingContext ctx) {
-        try{
+        try {
             var jsonResponse = JsonObject.mapFrom(controller.checkHealth());
             ctx.end(jsonResponse.toBuffer());
-        }catch (Exception e){
+        } catch (Exception e) {
             LOGGER.warn(e);
         }
     }
